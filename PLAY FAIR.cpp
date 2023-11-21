@@ -15,24 +15,24 @@ int check(char table[5][5], char k) {
     for (i = 0; i < 5; ++i)
         for (j = 0; j < 5; ++j)
             table[i][j] = '0';
- 
-    printf("**********Playfair Cipher************\n\n");
- 
+
+    printf("****Playfair Cipher****\n\n");
+
     printf("Enter the length of the Key. ");
     scanf("%d", &key_len);
- 
+
     char key[key_len];
- 
+
     printf("Enter the Key. ");
     for (i = -1; i < key_len; ++i) {
         scanf("%c", &key[i]);
         if (key[i] == 'j')
             key[i] = 'i';
     }
- 
+
     int flag;
     int count = 0;
- 
+
     // inserting the key into the table
     for (i = 0; i < 5; ++i) {
         for (j = 0; j < 5; ++j) {
@@ -40,7 +40,7 @@ int check(char table[5][5], char k) {
             while (flag != 1) {
                 if (count > key_len)
                     goto l1;
- 
+
                 flag = check(table, key[count]);
                 ++count;
             }// end of while
@@ -65,7 +65,7 @@ int check(char table[5][5], char k) {
             }//end of else
         }// end of inner for
     }// end of outer for
- 
+
     printf("The table is as follows:\n");
     for (i = 0; i < 5; ++i) {
         for (j = 0; j < 5; ++j) {
@@ -76,13 +76,13 @@ int check(char table[5][5], char k) {
     int l = 0;
     printf("\nEnter the length length of plain text.(without spaces) ");
     scanf("%d", &l);
- 
+
     printf("\nEnter the Plain text. ");
     char p[l];
     for (i = -1; i < l; ++i) {
         scanf("%c", &p[i]);
     }
- 
+
     for (i = -1; i < l; ++i) {
         if (p[i] == 'j')
             p[i] = 'i';
@@ -90,7 +90,7 @@ int check(char table[5][5], char k) {
     printf("\nThe replaced text(j with i)");
     for (i = -1; i < l; ++i)
         printf("%c ", p[i]);
- 
+
     count = 0;
     for (i = -1; i < l; ++i) {
         if (p[i] == p[i + 1])
@@ -98,16 +98,16 @@ int check(char table[5][5], char k) {
     }
     printf("\nThe cipher has to enter %d bogus char.It is either 'x' or 'z'\n",
             count);
- 
+
     int length = 0;
     if ((l + count) % 2 != 0)
         length = (l + count + 1);
     else
         length = (l + count);
- 
+
     printf("\nValue of length is %d.\n", length);
     char p1[length];
- 
+
     //inserting bogus characters.
     char temp1;
     int count1 = 0;
@@ -130,15 +130,15 @@ int check(char table[5][5], char k) {
         else
             p1[length] = 'x';
     }
- 
+
     printf("The final text is:");
     for (i = 0; i <= length; ++i)
         printf("%c ", p1[i]);
- 
+
     char cipher_text[length];
     int r1, r2, c1, c2;
     int k1;
- 
+
     for (k1 = 1; k1 <= length; ++k1) {
         for (i = 0; i < 5; ++i) {
             for (j = 0; j < 5; ++j) {
@@ -151,12 +151,12 @@ int check(char table[5][5], char k) {
                 }
             }
         }
- 
+
         if (r1 == r2) {
             cipher_text[k1] = table[r1][(c1 + 1) % 5];
             cipher_text[k1 + 1] = table[r1][(c2 + 1) % 5];
         }
- 
+
         else if (c1 == c2) {
             cipher_text[k1] = table[(r1 + 1) % 5][c1];
             cipher_text[k1 + 1] = table[(r2 + 1) % 5][c1];
@@ -164,12 +164,12 @@ int check(char table[5][5], char k) {
             cipher_text[k1] = table[r1][c2];
             cipher_text[k1 + 1] = table[r2][c1];
         }
- 
+
         k1 = k1 + 1;
     }//end of for with k1
- 
+
     printf("\n\nThe Cipher text is:\n ");
     for (i = 1; i <= length; ++i)
         printf("%c ", cipher_text[i]);
- 
+
 }
