@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdint.h>
+uint64_t initial_key;
+uint32_t shifts[16];
+uint64_t subkeys[16];
+uint64_t split_key(uint64_t key) {
+    uint64_t left = key >> 28;
+    uint64_t right = key & 0xFFFFFFF;
+    return (left << 32) | right;
+}
+uint64_t combine_key(uint64_t left, uint64_t right) {
+    return (left << 28) | (right & 0xFFFFFFF);
+}
+uint64_t shift_key_left(uint64_t key, int n) {
+    return ((key << n) & 0xFFFFFFF) | (key >> (28 - n));
+}
+int main() {
+    initial_key = 9;
+    int i;
+    int shift_values[16] = {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
+    for (i = 0; i < 16; i++) {
+        shifts[i] = shift_values[i];
+    }
+    uint64_t key = initial_key;
+    for (i = 0; i < 16; i++) {
+        uint64_t left = key >> 28;
+        uint64_t right = key & 0xFFFFFFF;
+        left = shift_key_left(left, shifts[i]);
+        right = shift_key_left(right, shifts[i]);
+        uint64_t subkey = combine_key(left, right);
+        subkeys[i] = subkey;
+        key = subkey;
+    }
+    printf("Subkeys:\n");
+    for (i = 0; i < 16; i++) {
+        printf("%d: %016llX\n", i + 1, subkeys[i]);
+    }
+    return 0;
+}
